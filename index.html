@@ -41,15 +41,13 @@
       });
     }
 
-    function checkForUpdates() {
-      var xhr = new XMLHttpRequest();
-      xhr.open('GET', window.location.href, true);
-      xhr.onreadystatechange = function() {
-        if (xhr.readyState === 4 && xhr.status === 200) {
-          playAlarm();
-        }
-      };
-      xhr.send();
+    async function checkForUpdates() {
+      const response = await fetch(window.location.href, {
+        method: 'GET',
+      });
+      if (response.ok) {
+        playAlarm();
+      }
     }
 
     setInterval(checkForUpdates, 5000); // Check every 5 seconds
