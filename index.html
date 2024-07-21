@@ -28,7 +28,8 @@
 
     function playAlarm() {
       var selectedSound = document.getElementById('sound').value;
-      document.getElementById(selectedSound).play();
+      var soundElement = document.getElementById(selectedSound);
+      soundElement.play();
     }
 
     function stopAlarm() {
@@ -40,26 +41,18 @@
       });
     }
 
-    async function notifyWebApp() {
-      const response = await fetch('https://script.google.com/macros/s/AKfycbzx_HrH5Jg8BLz25TC4038cYqgrvKGjYyvuOrE3M6ZMTN6wk7kyvyWzkjV91v7RkBz0Mg/exec', {
-        method: 'POST',
-      });
-      const result = await response.json();
-      if (result.status === 'success') {
-        playAlarm();
-      }
+    function checkForUpdates() {
+      var xhr = new XMLHttpRequest();
+      xhr.open('GET', window.location.href, true);
+      xhr.onreadystatechange = function() {
+        if (xhr.readyState === 4 && xhr.status === 200) {
+          playAlarm();
+        }
+      };
+      xhr.send();
     }
 
-    // Periodically check for updates from the Google Sheets
-    setInterval(async function() {
-      const response = await fetch('https://script.google.com/macros/s/AKfycbzx_HrH5Jg8BLz25TC4038cYqgrvKGjYyvuOrE3M6ZMTN6wk7kyvyWzkjV91v7RkBz0Mg/exec', {
-        method: 'POST',
-      });
-      const result = await response.json();
-      if (result.status === 'success') {
-        playAlarm();
-      }
-    }, 5000); // Check every 5 seconds
+    setInterval(checkForUpdates, 5000); // Check every 5 seconds
   </script>
 </body>
 </html>
