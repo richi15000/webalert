@@ -1,30 +1,33 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Alarm System</title>
+  <title>Alarm Notification</title>
 </head>
 <body>
   <h1>Alarm System</h1>
-  <label for="sound">Choose an alarm sound:</label>
-  <select id="sound">
-    <option value="sound1">Sound 1</option>
-    <option value="sound2">Sound 2</option>
-  </select>
+  <p>Monitoring for notifications...</p>
 
-  <audio id="sound1" src="https://cdn.pixabay.com/download/audio/2022/03/21/audio_7b23a10981.mp3?filename=severe-warning-alarm-98704.mp3" loop></audio>
-  <audio id="sound2" src="https://cdn.pixabay.com/download/audio/2022/03/10/audio_b7ca4571b0.mp3?filename=alarm1-32464.mp3" loop></audio>
+  <audio id="alertSound" src="https://cdn.pixabay.com/download/audio/2022/03/21/audio_7b23a10981.mp3?filename=severe-warning-alarm-98704.mp3" loop></audio>
 
   <script>
-    function playAlarm() {
-      var selectedSound = document.getElementById('sound').value;
-      var soundElement = document.getElementById(selectedSound);
-      soundElement.play();
+    function checkForNotifications() {
+      fetch('http://95.138.193.252:32060/api/check') // Ezt az API végpontot megfelelően be kell állítani
+        .then(response => response.json())
+        .then(data => {
+          if (data.notification) {
+            // Ha van értesítés, lejátszunk egy hangot
+            document.getElementById('alertSound').play();
+          } else {
+            // Ha nincs értesítés, megállítjuk a hangot
+            document.getElementById('alertSound').pause();
+            document.getElementById('alertSound').currentTime = 0;
+          }
+        })
+        .catch(error => console.error('Error checking notifications:', error));
     }
 
-    // Automatikus lejátszás az oldal betöltésekor
-    window.onload = function() {
-      playAlarm();
-    };
+    // 5 másodpercenként ellenőrizzük az értesítéseket
+    setInterval(checkForNotifications, 5000);
   </script>
 </body>
 </html>
