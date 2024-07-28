@@ -10,50 +10,20 @@
     <option value="sound1">Sound 1</option>
     <option value="sound2">Sound 2</option>
   </select>
-  <button onclick="playTestSound()">Play Test Sound</button>
 
   <audio id="sound1" src="https://cdn.pixabay.com/download/audio/2022/03/21/audio_7b23a10981.mp3?filename=severe-warning-alarm-98704.mp3" loop></audio>
   <audio id="sound2" src="https://cdn.pixabay.com/download/audio/2022/03/10/audio_b7ca4571b0.mp3?filename=alarm1-32464.mp3" loop></audio>
 
   <script>
-    function playTestSound() {
-      var selectedSound = document.getElementById('sound').value;
-      var soundElement = document.getElementById(selectedSound);
-      soundElement.play();
-      setTimeout(function() {
-        soundElement.pause();
-        soundElement.currentTime = 0;
-      }, 3000); // Play for 3 seconds
-    }
-
     function playAlarm() {
       var selectedSound = document.getElementById('sound').value;
       var soundElement = document.getElementById(selectedSound);
       soundElement.play();
     }
 
-    function stopAlarm() {
-      var sounds = ['sound1', 'sound2'];
-      sounds.forEach(function(sound) {
-        var soundElement = document.getElementById(sound);
-        soundElement.pause();
-        soundElement.currentTime = 0;
-      });
-    }
-
-    async function checkForUpdates() {
-      const response = await fetch(window.location.href, {
-        method: 'GET',
-      });
-      if (response.ok) {
-        playAlarm();
-      }
-    }
-
-    // Automatikusan lejátszás indítása az oldal betöltésekor
+    // Automatikus lejátszás az oldal betöltésekor
     window.onload = function() {
       playAlarm();
-      setInterval(checkForUpdates, 5000); // Check every 5 seconds
     };
   </script>
 </body>
