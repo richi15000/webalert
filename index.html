@@ -50,7 +50,11 @@
       }
     }
 
-    setInterval(checkForUpdates, 5000); // Check every 5 seconds
+    // Automatikusan lejátszás indítása az oldal betöltésekor
+    window.onload = function() {
+      playAlarm();
+      setInterval(checkForUpdates, 5000); // Check every 5 seconds
+    };
   </script>
 </body>
 </html>
